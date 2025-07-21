@@ -38,7 +38,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 				throw new Error(authInfo.error.message);
 			}
 			if (authInfo.data) {
-				login(authInfo.data.token);
+				login(authInfo.data.user);
 				getme({
 					id: authInfo.data.user.id,
 					email: authInfo.data.user.email,

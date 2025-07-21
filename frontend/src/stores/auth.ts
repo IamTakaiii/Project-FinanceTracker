@@ -15,7 +15,7 @@ export type AuthState = {
 	token: string | null;
 	user: User | null;
 	isAuthenticated: boolean;
-	login: (token: string) => void;
+	login: (user: User) => void;
 	logout: () => void;
 	getme: (user: User) => void;
 };
@@ -26,7 +26,7 @@ export const AuthStore = create<AuthState>()(
 			token: null,
 			user: null,
 			isAuthenticated: false,
-			login: (token) => set({ token, isAuthenticated: true }),
+			login: (user) => set({ user, isAuthenticated: true }),
 			logout: () => set({ token: null, user: null, isAuthenticated: false }),
 			getme: (user) => set({ user, isAuthenticated: true }),
 		}),
