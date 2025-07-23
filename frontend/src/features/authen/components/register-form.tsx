@@ -92,7 +92,7 @@ export const RegisterForm = ({ className, ...props }: React.ComponentProps<"div"
 
 						<div className="mt-9">
 							<Button type="submit" className="w-full my-3" disabled={isLoading}>
-								{isLoading ? <Spinner size="small" className="text-muted-foreground" /> : "Register"}
+								{isLoading ? <Spinner size="small"/> : "Register"}
 							</Button>
 						</div>
 					</form>

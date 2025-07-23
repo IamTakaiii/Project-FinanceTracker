@@ -37,7 +37,7 @@ interface SpinnerContentProps extends VariantProps<typeof spinnerVariants>, Vari
 export function Spinner({ size, show, children, className }: SpinnerContentProps) {
 	return (
 		<span className={spinnerVariants({ show })}>
-			<Loader2 className={cn(loaderVariants({ size }), className)} />
+			<Loader2 className={cn(loaderVariants({ size }), className ? className : "text-white")} />
 			{children}
 		</span>
 	);
