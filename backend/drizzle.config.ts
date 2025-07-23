@@ -2,7 +2,7 @@ import type { Config } from "drizzle-kit";
 import env from "env-var";
 
 export default {
-  schema: "./src/shared/schemas",
+  schema: "./src/core/infra/schema",
   out: "./drizzle",
   dialect: "postgresql",
   casing: "snake_case",

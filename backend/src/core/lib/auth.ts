@@ -3,8 +3,8 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
 import { Elysia } from "elysia";
 
-import { db } from "../configs/db.config";
-import { account, session, user, verification } from "../schemas/auth.schema";
+import { db } from "../infra/db.infra";
+import { account, session, user, verification } from "../infra/schema/auth.schema";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

@@ -4,10 +4,10 @@ import { Elysia } from "elysia";
 import { helmet } from "elysia-helmet";
 import logixlysia from "logixlysia";
 
-import { AppRoutes } from "./app.routes";
-import { db } from "./shared/configs/db.config";
-import { swaggerConfig } from "./shared/configs/swagger.config";
-import { BetterAuthPlugin } from "./shared/lib/auth";
+import { db } from "./core/infra/db.infra";
+import { swaggerConfig } from "./core/infra/swagger.infra";
+import { BetterAuthPlugin } from "./core/lib/auth";
+import { AppRoutes } from "./routes";
 
 await db.$client.connect();
 
