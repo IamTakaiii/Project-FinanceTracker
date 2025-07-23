@@ -16,3 +16,8 @@ export const registerByEmail = async (name: string, email: string, password: str
 	});
 	return response;
 };
+
+export const logout = async () => {
+	const response = await authClient.signOut();
+	return response;
+}

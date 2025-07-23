@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
@@ -17,6 +18,8 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar";
 import { Link, useRouterState } from "@tanstack/react-router";
+import { NavUser } from "./nav-user";
+import { AuthStore } from "@/stores/auth";
 
 type AdditonalSidebarProps = {
 	navList: {
@@ -35,7 +38,8 @@ type SidebarProps = React.ComponentProps<typeof Sidebar> & AdditonalSidebarProps
 
 export function AppSidebar({ ...props }: SidebarProps) {
 	const { pathname } = useRouterState({ select: (s) => s.location });
-
+	const auth = AuthStore((state) => state);
+	
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
@@ -71,8 +75,28 @@ export function AppSidebar({ ...props }: SidebarProps) {
 						</SidebarGroup>
 					</Collapsible>
 				))}
+
 			</SidebarContent>
 			<SidebarRail />
+			<SidebarFooter>
+				{
+					auth.isAuthenticated ? (
+						<NavUser user={{ 
+							name: auth.user?.name || "Anonymous User",
+							email: auth.user?.email || "-",
+							avatar: auth.user?.image || "https://via.placeholder.com/150"
+						}} />
+					) : (
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton asChild>
+									<Link to="/login">Login</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					)
+				}
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

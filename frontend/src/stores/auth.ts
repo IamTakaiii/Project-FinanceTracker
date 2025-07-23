@@ -1,6 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const initialState = {
+  token: null,
+  user: null,
+  isAuthenticated: false,
+};
+
 export type User = {
 	id: string;
 	email: string;
@@ -16,19 +22,19 @@ export type AuthState = {
 	user: User | null;
 	isAuthenticated: boolean;
 	login: (user: User) => void;
-	logout: () => void;
 	getme: (user: User) => void;
+	logout: () => void;
 };
 
 export const AuthStore = create<AuthState>()(
 	persist(
-		(set) => ({
+		set => ({
 			token: null,
 			user: null,
 			isAuthenticated: false,
 			login: (user) => set({ user, isAuthenticated: true }),
-			logout: () => set({ token: null, user: null, isAuthenticated: false }),
 			getme: (user) => set({ user, isAuthenticated: true }),
+			logout: () => set(initialState),
 		}),
 		{
 			name: "auth-storage",

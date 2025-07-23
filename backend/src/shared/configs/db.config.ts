@@ -6,6 +6,7 @@ import * as authSchema from "../schemas/auth.schema";
 
 export const client = new Client({
   connectionString: env.get("DATABASE_URL").required().asString(),
+  keepAlive: true,
 });
 
 export const db = drizzle({
