@@ -90,7 +90,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 							/>
 
 							<Button type="submit" className="w-full my-3" disabled={isLoading}>
-								{isLoading ? <Spinner size="small" className="text-muted-foreground" /> : "Login"}
+								{isLoading ? <Spinner size="small" className="text-white" /> : "Login"}
 							</Button>
 
 							<div className="text-center text-sm color-primary">

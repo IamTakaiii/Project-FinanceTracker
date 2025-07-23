@@ -1,8 +1,12 @@
 "use client"
 
 import {
+  BadgeCheck,
+  Bell,
   ChevronsUpDown,
+  CreditCard,
   LogOut,
+  Sparkles,
 } from "lucide-react"
 
 import {
@@ -13,6 +17,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -27,6 +32,7 @@ import {
 import { AuthStore } from "@/stores/auth"
 import { useNavigate } from "@tanstack/react-router"
 import { logout } from "@/features/authen/api/auth"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -46,6 +52,7 @@ export function NavUser({
     state.logout()
     await logout()
     navigate({ to: "/login" })
+    toast.success("Logged out successfully")
   }
 
   // const handleLinkClick = (link: string) => {
@@ -91,7 +98,7 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
+            <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
@@ -111,7 +118,7 @@ export function NavUser({
                 <Bell />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup> */}
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
