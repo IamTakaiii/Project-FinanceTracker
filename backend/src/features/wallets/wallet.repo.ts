@@ -1,30 +1,73 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 
 import * as schema from "../../core/infra/schema/all.schema";
+import { CreateWallet, UpdateWallet, WalletQuery } from "./wallet.dto";
 
 export class WalletRepository {
   constructor(private db: NodePgDatabase<typeof schema>) {}
 
-  public async get(userId: string) {
-    // Logic to fetch wallets for a user`
+  public async create(userId: string, walletData: CreateWallet) {
+    await this.db
+      .insert(schema.wallets)
+      .values({
+        id: crypto.randomUUID(),
+        name: walletData.name,
+        initial_balance: walletData.initial_balance.toString(),
+        currency: walletData.currency,
+        userId: userId,
+      })
+      .returning();
   }
 
-  public async create(walletData: any) {
-    // Logic to create a new wallet
-  }
+  public async update(walletId: string, walletData: UpdateWallet) {
+    const updateData: Partial<UpdateWallet> = {};
 
-  public async update(walletId: string, walletData: any) {
-    // Logic to update an existing wallet
+    if (walletData.name) {
+      updateData.name = walletData.name;
+    }
+
+    const wallet = await this.db
+      .update(schema.wallets)
+      .set(updateData)
+      .where(eq(schema.wallets.id, walletId))
+      .returning();
+
+    return wallet;
   }
 
   public async delete(walletId: string) {
     const wallet = await this.db.delete(schema.wallets).where(eq(schema.wallets.id, walletId)).returning();
+
+    if (wallet.length === 0) {
+      throw new Error("Wallet not found");
+    }
+
     return wallet;
+  }
+
+  public async get(query: WalletQuery) {
+    const wallets = await this.db.query.wallets.findMany({
+      limit: query.limit,
+      offset: query.offset,
+      where: and(
+        query.userId ? eq(schema.wallets.userId, query.userId) : undefined,
+        query.name ? eq(schema.wallets.name, query.name) : undefined,
+        query.currency ? eq(schema.wallets.currency, query.currency) : undefined,
+      ),
+      orderBy: schema.wallets.name,
+    });
+
+    return wallets;
   }
 
   public async getById(walletId: string) {
     const wallet = await this.db.select().from(schema.wallets).where(eq(schema.wallets.id, walletId)).execute();
+
+    if (wallet.length === 0) {
+      throw new Error("Wallet not found");
+    }
+
     return wallet;
   }
 }
