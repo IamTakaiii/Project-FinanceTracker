@@ -5,7 +5,11 @@ import * as schema from "../../core/infra/schema/all.schema";
 import { CreateWallet, UpdateWallet, WalletQuery } from "./wallet.dto";
 
 export class WalletRepository {
-  constructor(private db: NodePgDatabase<typeof schema>) {}
+  private db: NodePgDatabase<typeof schema>;
+
+  constructor(db: NodePgDatabase<typeof schema>) {
+    this.db = db;
+  }
 
   public async create(userId: string, walletData: CreateWallet) {
     await this.db
@@ -37,7 +41,10 @@ export class WalletRepository {
   }
 
   public async delete(walletId: string) {
-    const wallet = await this.db.delete(schema.wallets).where(eq(schema.wallets.id, walletId)).returning();
+    const wallet = await this.db
+      .delete(schema.wallets)
+      .where(eq(schema.wallets.id, walletId))
+      .returning();
 
     if (wallet.length === 0) {
       throw new Error("Wallet not found");

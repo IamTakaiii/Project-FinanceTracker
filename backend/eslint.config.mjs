@@ -41,7 +41,9 @@ export default [
       "simple-import-sort/exports": "error",
       "import/first": "error",
       "import/no-duplicates": "error",
-      "prettier/prettier": ["error", { printWidth: 120 }],
+      "prettier/prettier": ["error", { printWidth: 100 }],
+      "no-console": "warn",
+      "no-unused-vars": "warn",
     },
   },
 ];
