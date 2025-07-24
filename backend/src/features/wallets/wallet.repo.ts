@@ -46,12 +46,12 @@ export class WalletRepository {
     return wallet;
   }
 
-  public async get(query: WalletQuery) {
+  public async get(userId: string, query: WalletQuery) {
     const wallets = await this.db.query.wallets.findMany({
       limit: query.limit,
       offset: query.offset,
       where: and(
-        query.userId ? eq(schema.wallets.userId, query.userId) : undefined,
+        eq(schema.wallets.userId, userId),
         query.name ? eq(schema.wallets.name, query.name) : undefined,
         query.currency ? eq(schema.wallets.currency, query.currency) : undefined,
       ),
@@ -61,8 +61,12 @@ export class WalletRepository {
     return wallets;
   }
 
-  public async getById(walletId: string) {
-    const wallet = await this.db.select().from(schema.wallets).where(eq(schema.wallets.id, walletId)).execute();
+  public async getById(userId: string, walletId: string) {
+    const wallet = await this.db
+      .select()
+      .from(schema.wallets)
+      .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
+      .execute();
 
     if (wallet.length === 0) {
       throw new Error("Wallet not found");

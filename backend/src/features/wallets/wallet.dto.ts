@@ -15,7 +15,6 @@ const walletParamsSchema = t.Object({
 });
 
 const walletQuerySchema = t.Object({
-  userId: t.String(),
   name: t.Optional(t.String({ maxLength: 100 })),
   currency: t.Optional(t.String({ length: 3 })),
   limit: t.Optional(t.Number({ minimum: 1, maximum: 100 })),
