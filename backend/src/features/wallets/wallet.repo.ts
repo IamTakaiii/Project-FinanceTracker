@@ -25,15 +25,9 @@ export class WalletRepository {
   }
 
   public async update(walletId: string, walletData: UpdateWallet) {
-    const updateData: Partial<UpdateWallet> = {};
-
-    if (walletData.name) {
-      updateData.name = walletData.name;
-    }
-
     const wallet = await this.db
       .update(schema.wallets)
-      .set(updateData)
+      .set(walletData)
       .where(eq(schema.wallets.id, walletId))
       .returning();
 
