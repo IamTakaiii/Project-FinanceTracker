@@ -1,5 +1,7 @@
 import Elysia, { t } from "elysia";
 
+import { ResponseWithoutData } from "../../core/domain/dto";
+
 const createWalletSchema = t.Object({
   name: t.String({ maxLength: 100 }),
   initial_balance: t.Number({ minimum: 0, maximum: 99999999.99 }),
@@ -31,4 +33,5 @@ export const walletModel = new Elysia().model({
   "wallet.update": updateWalletSchema,
   "wallet.params": walletParamsSchema,
   "wallet.query": walletQuerySchema,
+  "wallet.create.response": ResponseWithoutData,
 });

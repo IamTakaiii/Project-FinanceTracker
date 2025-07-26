@@ -68,11 +68,6 @@ export class WalletRepository {
       .from(schema.wallets)
       .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
       .execute();
-
-    if (wallet.length === 0) {
-      throw new Error("Wallet not found");
-    }
-
     return wallet;
   }
 }
