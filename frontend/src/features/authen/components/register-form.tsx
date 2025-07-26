@@ -23,7 +23,7 @@ export const RegisterForm = ({ className, ...props }: React.ComponentProps<"div"
 		},
 
 		validate: {
-			name: (value) => (value.length >= 2 ? null : "Name is required and must be at least 3 characters long"),
+			name: (value) => (value.length >= 2 ? null : "Name is required and must be at least 2 characters long"),
 			email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
 			password: (value) => (value.length >= 6 ? null : "Password must be at least 6 characters long"),
 		},
