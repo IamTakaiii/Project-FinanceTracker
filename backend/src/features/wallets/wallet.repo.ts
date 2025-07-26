@@ -24,20 +24,20 @@ export class WalletRepository {
       .returning();
   }
 
-  public async update(walletId: string, walletData: UpdateWallet) {
+  public async update(userId: string, walletId: string, walletData: UpdateWallet) {
     const wallet = await this.db
       .update(schema.wallets)
       .set(walletData)
-      .where(eq(schema.wallets.id, walletId))
+      .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
       .returning();
 
     return wallet;
   }
 
-  public async delete(walletId: string) {
+  public async delete(userId: string, walletId: string) {
     const wallet = await this.db
       .delete(schema.wallets)
-      .where(eq(schema.wallets.id, walletId))
+      .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
       .returning();
 
     if (wallet.length === 0) {
