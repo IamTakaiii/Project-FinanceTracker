@@ -4,6 +4,7 @@ import { Elysia } from "elysia";
 import { helmet } from "elysia-helmet";
 import logixlysia from "logixlysia";
 
+import { errorHandler } from "./core/domain/error/error.handler";
 import { db } from "./core/infra/db.infra";
 import { swaggerConfig } from "./core/infra/swagger.infra";
 import { BetterAuthPlugin } from "./core/lib/auth";
@@ -17,6 +18,7 @@ const app = new Elysia()
   .use(swagger(swaggerConfig))
   .use(helmet())
   .use(logixlysia())
-  .use(AppRoutes);
+  .use(AppRoutes)
+  .onError(({ error, code }) => errorHandler(error, code));
 
 app.listen(process.env.PORT || 3000);
