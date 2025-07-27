@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormField } from "@/components/ui/formfield";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
     const navigate = useNavigate();
@@ -50,6 +51,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     updatedAt: new Date(authInfo.data.user.updatedAt),
                 });
                 navigate({ to: "/dashboard" });
+                toast.success("Login successful");
             }
         } catch (error) {
             ErrorHandler(error instanceof Error ? error : new Error("An unknown error occurred"));

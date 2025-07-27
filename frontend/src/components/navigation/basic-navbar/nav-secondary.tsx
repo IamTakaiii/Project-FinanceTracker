@@ -26,7 +26,7 @@ export function NavSecondary({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <Link to={item.url}>
-                <SidebarMenuButton isActive={props.pathname?.startsWith(item.url)}>
+                <SidebarMenuButton isActive={props.pathname === item.url}>
                   <item.icon />
                   <span>{item.title}</span>
                 </SidebarMenuButton>

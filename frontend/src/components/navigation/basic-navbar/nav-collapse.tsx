@@ -52,7 +52,7 @@ export function NavCollapse({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild isActive={pathname.startsWith(subItem.url)}>
+                      <SidebarMenuSubButton asChild isActive={pathname === subItem.url}>
                         <Link to={subItem.url} className="flex items-center gap-2">
                           {subItem.title}
                         </Link>

@@ -33,8 +33,8 @@ export const userProfile: UserProfile = {
 
 export const mainNavItems: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: IconDashboard },
-  { title: "Lifecycle", url: "/bib", icon: IconListDetails },
-  { title: "Analytics", url: "#", icon: IconChartBar },
+  { title: "Lifecycle", url: "/dashboard/bib", icon: IconListDetails },
+  { title: "Analytics", url: "/dashboard/bob", icon: IconChartBar },
   { title: "Projects", url: "#", icon: IconFolder },
   { title: "Team", url: "#", icon: IconUsers },
 ];

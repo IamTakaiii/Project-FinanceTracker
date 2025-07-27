@@ -15,7 +15,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedBibRouteImport } from './routes/_authenticated/bib'
+import { Route as AuthenticatedDashboardBobRouteImport } from './routes/_authenticated/dashboard.bob'
+import { Route as AuthenticatedDashboardBibRouteImport } from './routes/_authenticated/dashboard.bib'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -45,50 +46,73 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedBibRoute = AuthenticatedBibRouteImport.update({
-  id: '/bib',
-  path: '/bib',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
+const AuthenticatedDashboardBobRoute =
+  AuthenticatedDashboardBobRouteImport.update({
+    id: '/bob',
+    path: '/bob',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBibRoute =
+  AuthenticatedDashboardBibRouteImport.update({
+    id: '/bib',
+    path: '/bib',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/bib': typeof AuthenticatedBibRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
+  '/dashboard/bib': typeof AuthenticatedDashboardBibRoute
+  '/dashboard/bob': typeof AuthenticatedDashboardBobRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/bib': typeof AuthenticatedBibRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
+  '/dashboard/bib': typeof AuthenticatedDashboardBibRoute
+  '/dashboard/bob': typeof AuthenticatedDashboardBobRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
-  '/_authenticated/bib': typeof AuthenticatedBibRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
+  '/_authenticated/dashboard/bib': typeof AuthenticatedDashboardBibRoute
+  '/_authenticated/dashboard/bob': typeof AuthenticatedDashboardBobRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bib' | '/dashboard' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/bib'
+    | '/dashboard/bob'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bib' | '/dashboard' | '/login' | '/register'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/bib'
+    | '/dashboard/bob'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_public'
-    | '/_authenticated/bib'
     | '/_authenticated/dashboard'
     | '/_public/login'
     | '/_public/register'
+    | '/_authenticated/dashboard/bib'
+    | '/_authenticated/dashboard/bob'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -141,24 +165,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/bib': {
-      id: '/_authenticated/bib'
+    '/_authenticated/dashboard/bob': {
+      id: '/_authenticated/dashboard/bob'
+      path: '/bob'
+      fullPath: '/dashboard/bob'
+      preLoaderRoute: typeof AuthenticatedDashboardBobRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/bib': {
+      id: '/_authenticated/dashboard/bib'
       path: '/bib'
-      fullPath: '/bib'
-      preLoaderRoute: typeof AuthenticatedBibRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      fullPath: '/dashboard/bib'
+      preLoaderRoute: typeof AuthenticatedDashboardBibRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardBibRoute: typeof AuthenticatedDashboardBibRoute
+  AuthenticatedDashboardBobRoute: typeof AuthenticatedDashboardBobRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardBibRoute: AuthenticatedDashboardBibRoute,
+    AuthenticatedDashboardBobRoute: AuthenticatedDashboardBobRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedBibRoute: typeof AuthenticatedBibRoute
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedBibRoute: AuthenticatedBibRoute,
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
