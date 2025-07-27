@@ -31,7 +31,7 @@ export const BetterAuthPlugin = new Elysia({ name: "better-auth" }).mount(auth.h
         headers,
       });
 
-      if (!session) throw new UnauthorizedError("Unauthorized");
+      if (!session) throw new UnauthorizedError();
 
       return {
         user: session.user,
