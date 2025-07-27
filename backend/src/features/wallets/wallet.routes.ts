@@ -7,7 +7,7 @@ import { walletModel } from "./wallet.dto";
 import { WalletRepository } from "./wallet.repo";
 import { WalletService } from "./wallet.service";
 
-export const walletRoutes = new Elysia({ prefix: "/wallets" })
+export const walletRoutes = new Elysia({ prefix: "/wallets", name: "wallets-routes" })
   .use(BetterAuthPlugin)
   .use(walletModel)
   .decorate("response", GenerateResponse)

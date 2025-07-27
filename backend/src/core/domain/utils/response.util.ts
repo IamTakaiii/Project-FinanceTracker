@@ -21,10 +21,6 @@ export class GenerateResponse {
     let message = "An Unexpected error occurred";
     if (error instanceof Error) {
       message = error.message;
-    } else if (Array.isArray(error)) {
-      message = error.join(", ");
-    } else if (typeof error === "string") {
-      message = error;
     }
     return {
       status: false,
