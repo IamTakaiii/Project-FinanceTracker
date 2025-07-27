@@ -23,4 +23,16 @@ export const walletRoutes = new Elysia({ prefix: "/wallets" })
       body: "wallet.create",
       response: "wallet.create.response",
     },
+  )
+  .get(
+    "/:id",
+    async ({ user, params, walletService, response }) => {
+      const wallet = await walletService.getWalletById(user.id, params.id);
+      return response.withData(wallet);
+    },
+    {
+      auth: true,
+      params: "wallet.params",
+      response: "wallet.id.response",
+    },
   );

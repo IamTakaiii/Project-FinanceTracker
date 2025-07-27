@@ -1,12 +1,26 @@
-import { ErrorCode } from "../../types";
+import Elysia from "elysia";
+
 import { GenerateResponse } from "../utils/response.util";
+import { BadRequestError, UnauthorizedError } from "./error.class";
 
-export const errorHandler = (error: unknown, code: ErrorCode) => {
-  const response = GenerateResponse;
+export const errorHandler = (app: Elysia) => {
+  app.error({ UnauthorizedError, BadRequestError }).onError(({ error, code, set }) => {
+    let errorMessage = "An unexpected error occurred";
 
-  if (error instanceof Error) {
-    return response.withError(error, code);
-  }
+    const response = GenerateResponse;
 
-  return response.withError("An unexpected error occurred", code);
+    if (error instanceof UnauthorizedError && set) {
+      set.status = 401;
+      errorMessage = error.message;
+    } else if (error instanceof BadRequestError && set) {
+      set.status = 400;
+      errorMessage = error.message;
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
+    return response.withError(errorMessage, code);
+  });
+
+  return app;
 };

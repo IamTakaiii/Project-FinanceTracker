@@ -1,6 +1,6 @@
 export type ResponseParams<T> = {
   status: boolean;
-  data?: T;
+  data: T;
   message: string;
   code?: ErrorCode;
 };

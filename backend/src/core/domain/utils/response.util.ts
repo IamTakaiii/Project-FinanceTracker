@@ -1,4 +1,4 @@
-import { ErrorCode, ResponseParams } from "../../types";
+import { ResponseParams } from "../../types";
 
 export class GenerateResponse {
   static withoutData(message: string = "", status = true): ResponseParams<null> {
@@ -17,7 +17,7 @@ export class GenerateResponse {
     };
   }
 
-  static withError<T>(error: unknown, code?: ErrorCode): ResponseParams<T> {
+  static withError<T>(error: unknown, code?: any): ResponseParams<T> {
     let message = "An Unexpected error occurred";
     if (error instanceof Error) {
       message = error.message;
@@ -30,6 +30,7 @@ export class GenerateResponse {
       status: false,
       code: code,
       message: message,
+      data: null as unknown as T,
     };
   }
 }

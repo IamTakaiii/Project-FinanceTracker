@@ -1,16 +1,14 @@
 import Elysia, { t } from "elysia";
 
-import { ResponseWithoutData } from "../../core/domain/dto";
+import { Response, ResponseWithoutData } from "../../core/domain/dto";
 
 const createWalletSchema = t.Object({
   name: t.String({ maxLength: 100 }),
-  initial_balance: t.Number({ minimum: 0, maximum: 99999999.99 }),
+  initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" }),
   currency: t.String({ length: 3 }),
 });
 
-const updateWalletSchema = t.Object({
-  name: t.Optional(t.String({ maxLength: 100 })),
-});
+const updateWalletSchema = t.Partial(createWalletSchema);
 
 const walletParamsSchema = t.Object({
   id: t.String(),
@@ -23,6 +21,16 @@ const walletQuerySchema = t.Object({
   offset: t.Optional(t.Number({ minimum: 0 })),
 });
 
+const walletResponseSchema = Response(
+  t.Object({
+    id: t.String(),
+    name: t.String({ maxLength: 100 }),
+    initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" }),
+    currency: t.String({ length: 3 }),
+    userId: t.String(),
+  }),
+);
+
 export type CreateWallet = typeof createWalletSchema.static;
 export type UpdateWallet = typeof updateWalletSchema.static;
 export type WalletParams = typeof walletParamsSchema.static;
@@ -34,4 +42,5 @@ export const walletModel = new Elysia().model({
   "wallet.params": walletParamsSchema,
   "wallet.query": walletQuerySchema,
   "wallet.create.response": ResponseWithoutData,
+  "wallet.id.response": walletResponseSchema,
 });

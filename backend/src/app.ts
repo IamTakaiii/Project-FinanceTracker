@@ -14,11 +14,11 @@ await db.$client.connect();
 
 const app = new Elysia()
   .use(BetterAuthPlugin)
+  .use(errorHandler)
   .use(cors())
   .use(swagger(swaggerConfig))
   .use(helmet())
   .use(logixlysia())
-  .use(AppRoutes)
-  .onError(({ error, code }) => errorHandler(error, code));
+  .use(AppRoutes);
 
 app.listen(process.env.PORT || 3000);

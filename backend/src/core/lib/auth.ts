@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
 import { Elysia } from "elysia";
 
+import { UnauthorizedError } from "../domain/error/error.class";
 import { db } from "../infra/db.infra";
 import { account, session, user, verification } from "../infra/schema/auth.schema";
 
@@ -25,12 +26,12 @@ export const auth = betterAuth({
 
 export const BetterAuthPlugin = new Elysia({ name: "better-auth" }).mount(auth.handler).macro({
   auth: {
-    async resolve({ status, request: { headers } }) {
+    async resolve({ request: { headers } }) {
       const session = await auth.api.getSession({
         headers,
       });
 
-      if (!session) return status(401);
+      if (!session) throw new UnauthorizedError("Unauthorized");
 
       return {
         user: session.user,

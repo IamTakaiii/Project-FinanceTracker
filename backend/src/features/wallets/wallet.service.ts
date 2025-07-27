@@ -1,3 +1,5 @@
+import { NotFoundError } from "elysia";
+
 import { CreateWallet, UpdateWallet, WalletQuery } from "./wallet.dto";
 import { WalletRepository } from "./wallet.repo";
 
@@ -26,7 +28,7 @@ export class WalletService {
 
   public async getWalletById(userId: string, walletId: string) {
     const wallet = await this.walletRepository.getById(userId, walletId);
-    if (!wallet) throw new Error("Wallet not found");
-    return wallet;
+    if (wallet.length === 0) throw new NotFoundError("Wallet not found");
+    return wallet[0];
   }
 }
