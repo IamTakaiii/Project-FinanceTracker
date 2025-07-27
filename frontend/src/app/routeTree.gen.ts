@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedBibRouteImport } from './routes/_authenticated/bib'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -44,15 +45,22 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedBibRoute = AuthenticatedBibRouteImport.update({
+  id: '/bib',
+  path: '/bib',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bib': typeof AuthenticatedBibRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bib': typeof AuthenticatedBibRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
@@ -62,20 +70,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/bib': typeof AuthenticatedBibRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/register'
+  fullPaths: '/' | '/bib' | '/dashboard' | '/login' | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/register'
+  to: '/' | '/bib' | '/dashboard' | '/login' | '/register'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_public'
+    | '/_authenticated/bib'
     | '/_authenticated/dashboard'
     | '/_public/login'
     | '/_public/register'
@@ -131,14 +141,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/bib': {
+      id: '/_authenticated/bib'
+      path: '/bib'
+      fullPath: '/bib'
+      preLoaderRoute: typeof AuthenticatedBibRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedBibRoute: typeof AuthenticatedBibRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBibRoute: AuthenticatedBibRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 

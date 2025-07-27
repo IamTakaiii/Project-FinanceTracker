@@ -16,10 +16,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
     const navigate = useNavigate();
-    const { login, getme } = AuthStore((state) => ({
-        login: state.login,
-        getme: state.getme,
-    }));
+    const { login, getme } = AuthStore((state) => state);
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm({

@@ -1,18 +1,17 @@
 import type React from "react";
-import { AppSidebar } from "@/components/navbar/sidebar-collapse";
+import { AppSidebar } from "@/components/navigation/basic-navbar/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Outlet } from "@tanstack/react-router";
-import { CustomBreadcrumb } from "@/components/navbar/breadcrumb";
+import { CustomBreadcrumb } from "@/components/navigation/breadcrumb";
 import { ThemeModeToggle } from "../theme/theme-mode";
 import { ThemeSelector } from "../theme/theme-selector";
-
-import navlist from "../navbar/menu-list";
+import { collapseNavItems, mainNavItems, secondaryNavItems, userProfile } from "../navigation/basic-navbar/options";
 
 const DefaultLayout = (): React.JSX.Element => {
 	return (
 		<SidebarProvider>
-			<AppSidebar navList={navlist} />
+			<AppSidebar mainNavItems={mainNavItems} collapseNavItems={collapseNavItems} secondaryNavItems={secondaryNavItems} user={userProfile} />
 			<SidebarInset>
 				<header
 					className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between
