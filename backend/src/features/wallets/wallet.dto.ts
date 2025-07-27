@@ -4,7 +4,7 @@ import { Response, ResponseWithoutData } from "../../core/domain/dto";
 
 const createWalletSchema = t.Object({
   name: t.String({ maxLength: 100 }),
-  initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" }),
+  initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$", default: "0.00" }),
   currency: t.String({ length: 3 }),
 });
 
@@ -25,7 +25,7 @@ const walletResponseSchema = Response(
   t.Object({
     id: t.String(),
     name: t.String({ maxLength: 100 }),
-    initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" }),
+    initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$", default: "0.00" }),
     currency: t.String({ length: 3 }),
     userId: t.String(),
   }),
