@@ -1,11 +1,9 @@
 import { ErrorPage } from "@/components/errors/error";
-import { ErrorHandler } from "@/utils/errors";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
 	component: RouteComponent,
 	loader: () => ({ crumb: "Dashboard" }),
-	onError: ErrorHandler,
 	errorComponent: ErrorPage,
 });
 
