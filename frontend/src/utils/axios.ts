@@ -5,16 +5,21 @@ import type { ApiErrorResponse } from "@/types/response";
 
 const api = axios.create({
 	baseURL: API_URL,
-	headers: { "Content-Type": "application/json" },
 });
+
+api.defaults.withCredentials = true;
 
 api.interceptors.response.use(
 	(response) => {
 		return response;
 	},
 	(error: AxiosError<ApiErrorResponse>) => {
-		if (error.response && error.response.status === 401) {
-			AuthStore.getState().logout();
+		if (error.response) {
+			const { data, status } = error.response;
+			if (status === 401) {
+				AuthStore.getState().logout();
+			}
+			return Promise.reject(data);
 		}
 		return Promise.reject(error);
 	}
