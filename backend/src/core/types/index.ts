@@ -3,6 +3,12 @@ export type ResponseParams<T> = {
   data: T;
   message: string;
   code?: ErrorCode;
+  pagination?: {
+    total?: number;
+    page?: number;
+    limit?: number;
+  };
+  cursor?: string | null;
 };
 
 export type ErrorCode =

@@ -35,4 +35,39 @@ export const walletRoutes = new Elysia({ prefix: "/wallets", name: "wallets-rout
       params: "wallet.params",
       response: "wallet.id.response",
     },
+  )
+  .get(
+    "/",
+    async ({ user, query, walletService, response }) => {
+      const results = await walletService.getWallets(user.id, query);
+      return response.withCursor(results.wallets, results.nextCursor);
+    },
+    {
+      auth: true,
+      query: "wallet.query",
+      response: "wallet.pagination.response",
+    },
+  )
+  .put(
+    "/:id",
+    async ({ body, user, params, walletService, response }) => {
+      await walletService.updateWallet(user.id, params.id, body);
+      return response.withoutData();
+    },
+    {
+      auth: true,
+      body: "wallet.update",
+      params: "wallet.params",
+    },
+  )
+  .delete(
+    "/:id",
+    async ({ user, params, walletService, response }) => {
+      await walletService.deleteWallet(user.id, params.id);
+      return response.withoutData();
+    },
+    {
+      auth: true,
+      params: "wallet.params",
+    },
   );

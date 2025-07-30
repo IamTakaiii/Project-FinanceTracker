@@ -1,6 +1,24 @@
 import Elysia, { t } from "elysia";
 
-import { Response, ResponseWithoutData } from "../../core/domain/dto";
+import { Response, ResponseWithoutData, ResponseWithPagination } from "../../core/domain/dto";
+
+const walletParamsSchema = t.Object({
+  id: t.String(),
+});
+
+const walletQuerySchema = t.Object({
+  name: t.Optional(t.String({ maxLength: 100 })),
+  currency: t.Optional(t.String({ length: 3 })),
+  limit: t.Optional(t.Number({ default: 10, minimum: 1, maximum: 100 })),
+  cursor: t.Optional(t.String({ pattern: "^[A-Za-z0-9+/=]+$" })),
+  sortBy: t.Optional(t.Union([t.Literal("name")])),
+  sortOrder: t.Optional(t.Union([t.Literal("asc"), t.Literal("desc")])),
+});
+
+const walletCursorSchema = t.Object({
+  name: t.String({ maxLength: 100 }),
+  id: t.String(),
+});
 
 const createWalletSchema = t.Object({
   name: t.String({ maxLength: 100 }),
@@ -10,31 +28,21 @@ const createWalletSchema = t.Object({
 
 const updateWalletSchema = t.Partial(createWalletSchema);
 
-const walletParamsSchema = t.Object({
+const walletSchema = t.Object({
   id: t.String(),
+  name: t.String({ maxLength: 100 }),
+  initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$", default: "0.00" }),
+  currency: t.String({ length: 3 }),
+  userId: t.String(),
 });
-
-const walletQuerySchema = t.Object({
-  name: t.Optional(t.String({ maxLength: 100 })),
-  currency: t.Optional(t.String({ length: 3 })),
-  limit: t.Optional(t.Number({ minimum: 1, maximum: 100 })),
-  offset: t.Optional(t.Number({ minimum: 0 })),
-});
-
-const walletResponseSchema = Response(
-  t.Object({
-    id: t.String(),
-    name: t.String({ maxLength: 100 }),
-    initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$", default: "0.00" }),
-    currency: t.String({ length: 3 }),
-    userId: t.String(),
-  }),
-);
+const walletResponseSchema = Response(walletSchema);
+const walletPaginationResponseSchema = ResponseWithPagination(walletSchema);
 
 export type CreateWallet = typeof createWalletSchema.static;
 export type UpdateWallet = typeof updateWalletSchema.static;
 export type WalletParams = typeof walletParamsSchema.static;
 export type WalletQuery = typeof walletQuerySchema.static;
+export type WalletCursor = typeof walletCursorSchema.static;
 
 export const walletModel = new Elysia().model({
   "wallet.create": createWalletSchema,
@@ -43,4 +51,5 @@ export const walletModel = new Elysia().model({
   "wallet.query": walletQuerySchema,
   "wallet.create.response": ResponseWithoutData,
   "wallet.id.response": walletResponseSchema,
+  "wallet.pagination.response": walletPaginationResponseSchema,
 });
