@@ -11,12 +11,5 @@ export const Route = createFileRoute('/_authenticated/wallets')({
     crumb: 'wallets',
     results: await getWallets(deps.search),
   }),
-  beforeLoad: ({ location, context, cause }) => {
-    console.log('Loading wallets route', {
-      location,
-      context,
-      cause,
-    });
-  }
 })
 

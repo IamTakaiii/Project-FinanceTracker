@@ -5,7 +5,7 @@ import { type Wallet } from "../wallet-types";
 export const WalletPage = () => {
   const [wallets, setWallets] = useState<Wallet[]>([]);
 
-  const { navigate, history } = useRouter();
+  const { navigate } = useRouter();
   const { cursor } = useSearch({ from: "/_authenticated/wallets" });
   const { results: { data, cursor: nextCursor } } = useLoaderData({ from: "/_authenticated/wallets" });
 
