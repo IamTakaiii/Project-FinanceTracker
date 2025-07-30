@@ -2,7 +2,6 @@ import api from "@/utils/axios"
 import type { GetWalletQuery, GetListWalletResponse, Wallet } from "./wallet-types"
 
 export const getWallets = async (query: GetWalletQuery) => {
-    console.log(document.cookie); // Debugging line to check cookies
     const response = await api.get<GetListWalletResponse>("/api/v1/wallets", {
         params: query,
     })
