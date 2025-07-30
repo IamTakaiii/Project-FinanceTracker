@@ -15,5 +15,5 @@ export type GetWalletQuery = {
 
 export type GetListWalletResponse = {
   data: Wallet[];
-  nextCursor: string | null;
+  cursor: string | null;
 }

@@ -59,7 +59,7 @@ export class WalletRepository {
   public async get(userId: string, query: WalletQuery) {
     const sortBy = query.sortBy || "name";
     const sortOrder = query.sortOrder || "asc";
-    const limit = query.limit;
+    const limit = query.limit ?? 10;
 
     const orderFn = sortOrder === "asc" ? asc : desc;
     const comparisonFn = sortOrder === "asc" ? gt : lt;

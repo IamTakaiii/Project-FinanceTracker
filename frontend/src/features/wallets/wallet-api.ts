@@ -3,7 +3,7 @@ import type { GetWalletQuery, GetListWalletResponse, Wallet } from "./wallet-typ
 
 export const getWallets = async (query: GetWalletQuery) => {
     const response = await api.get<GetListWalletResponse>("/api/v1/wallets", {
-        params: query,
+        params: query
     })
     return response.data
 }
