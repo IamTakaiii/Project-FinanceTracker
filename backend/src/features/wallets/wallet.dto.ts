@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 
-import { Response, ResponseWithoutData, ResponseWithPagination } from "../../core/domain/dto";
+import { Response, ResponseWithCursor, ResponseWithoutData } from "../../core/domain/dto";
 
 const walletParamsSchema = t.Object({
   id: t.String(),
@@ -31,12 +31,12 @@ const updateWalletSchema = t.Partial(createWalletSchema);
 const walletSchema = t.Object({
   id: t.String(),
   name: t.String({ maxLength: 100 }),
-  initial_balance: t.String({ pattern: "^\\d+(\\.\\d{1,2})?$", default: "0.00" }),
+  initial_balance: t.String(),
   currency: t.String({ length: 3 }),
   userId: t.String(),
 });
 const walletResponseSchema = Response(walletSchema);
-const walletPaginationResponseSchema = ResponseWithPagination(walletSchema);
+const walletPaginationResponseSchema = ResponseWithCursor(t.Array(walletSchema));
 
 export type CreateWallet = typeof createWalletSchema.static;
 export type UpdateWallet = typeof updateWalletSchema.static;

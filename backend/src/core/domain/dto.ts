@@ -36,6 +36,6 @@ export const ResponseWithCursor = <T extends TSchema>(schema: T) =>
     status: Type.Boolean(),
     code: Type.Optional(ErrorCodeSchema),
     data: schema,
-    cursor: Type.Optional(Type.String({ pattern: "^[A-Za-z0-9+/=]+$" })),
+    cursor: Type.Optional(Type.Nullable(Type.String({ pattern: "^[A-Za-z0-9+/=]+$" }))),
     message: Type.String(),
   });
