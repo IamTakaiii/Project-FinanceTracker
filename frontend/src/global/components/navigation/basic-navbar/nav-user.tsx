@@ -32,6 +32,7 @@ import {
 	useSidebar,
 } from "@/global/components/ui/sidebar";
 import { Skeleton } from "@/global/components/ui/skeleton";
+import { ErrorHandler } from "@/global/utils/errors";
 
 function NavUserSkeleton() {
 	return (
@@ -63,7 +64,7 @@ export function NavUser() {
 				navigate({ to: "/login" });
 			},
 			onError: (error) => {
-				toast.error(error.message || "Failed to log out.");
+				ErrorHandler(error);
 			},
 		});
 	};

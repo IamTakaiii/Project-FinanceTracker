@@ -7,11 +7,11 @@ export const useLogin = () => {
   const setToken = useAuthStore((state) => state.setToken);
 
   return useMutation({
-    mutationFn: (secret: { email: string; password: string }) => {
-      return loginByEmail(secret.email, secret.password);
+    mutationFn: async(secret: { email: string; password: string }) => {
+      return await loginByEmail(secret.email, secret.password);
     },
     onSuccess: ({ data }) => {
-      if (!data?.token) throw new Error("Login failed, no token received");
+      if (!data?.token) throw new Error("Login failed: No token received");
       setToken(data.token);
       queryClient.setQueryData(["user", "me"], data.user);
     },

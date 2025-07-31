@@ -41,9 +41,7 @@ export function LoginForm({
         toast.success("Login successful");
         navigate({ to: "/dashboard" });
       },
-      onError: (error) => {
-        ErrorHandler(error);
-      },
+      onError: (error) => ErrorHandler(error)
     });
   };
 
