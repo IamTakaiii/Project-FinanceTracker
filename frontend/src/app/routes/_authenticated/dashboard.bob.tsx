@@ -1,6 +1,6 @@
-import { ErrorPage } from "@/components/errors/error";
-import { getWallets } from "@/features/wallets/wallet-api";
-import type { GetWalletQuery, Wallet } from "@/features/wallets/wallet-types";
+import { ErrorPage } from "@/global/components/errors/error";
+import { getWallets } from "@/core/wallets/wallet-api";
+import type { GetWalletQuery, Wallet } from "@/core/wallets/wallet-types";
 import { createFileRoute, useLoaderData, useRouter, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 

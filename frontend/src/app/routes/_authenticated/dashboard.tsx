@@ -1,4 +1,4 @@
-import { ErrorPage } from "@/components/errors/error";
+import { ErrorPage } from "@/global/components/errors/error";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({

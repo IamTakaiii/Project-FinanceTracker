@@ -1,6 +1,6 @@
-import { WalletPage } from '@/features/wallets/components/wallet-page'
-import { getWallets } from '@/features/wallets/wallet-api'
-import type { GetWalletQuery } from '@/features/wallets/wallet-types'
+import { WalletPage } from '@/core/wallets/components/wallet-page'
+import { getWallets } from '@/core/wallets/wallet-api'
+import type { GetWalletQuery } from '@/core/wallets/wallet-types'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/wallets')({

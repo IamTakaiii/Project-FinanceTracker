@@ -1,12 +1,12 @@
-import DefaultLayout from "@/components/layout/default-layout";
-import { AuthStore } from "@/stores/auth";
-import { ErrorHandler } from "@/utils/errors";
+import DefaultLayout from "@/global/components/layout/default-layout";
+import { useAuthStore } from "@/global/stores/auth-store";
+import { ErrorHandler } from "@/global/utils/errors";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 const beforeLoadHandler = () => {
-	const { isAuthenticated } = AuthStore.getState();
+	const { token } = useAuthStore.getState();
 
-	if (!isAuthenticated) {
+	if (!token) {
 		ErrorHandler(new Error("Please login before accessing this page."));
 		throw redirect({ to: "/login" });
 	}

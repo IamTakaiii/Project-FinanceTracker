@@ -1,5 +1,5 @@
-import { ErrorPage } from '@/components/errors/error'
-import { ErrorHandler } from '@/utils/errors'
+import { ErrorPage } from '@/global/components/errors/error'
+import { ErrorHandler } from '@/global/utils/errors'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/dashboard/bib')({
