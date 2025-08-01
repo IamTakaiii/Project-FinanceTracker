@@ -15,7 +15,7 @@ import { Spinner } from "@/global/components/ui/spinner";
 import { useState } from "react";
 import { ErrorHandler } from "@/global/utils/errors";
 import { FormField } from "@/global/components/ui/formfield";
-
+import { toast } from "sonner";
 
 type WalletDialogProps = React.ComponentProps<"div"> & {
   children?: React.ReactNode;
@@ -23,11 +23,7 @@ type WalletDialogProps = React.ComponentProps<"div"> & {
   wallet?: Wallet;
 };
 
-export const WalletDialog = ({
-  children,
-  mode,
-  wallet,
-}: WalletDialogProps) => {
+export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const createWalletMutation = useCreateWallet();
@@ -61,6 +57,9 @@ export const WalletDialog = ({
       onSuccess: () => {
         setIsOpen(false);
         form.reset();
+        mode === "create"
+          ? toast.success("Wallet created successfully")
+          : toast.success("Wallet updated successfully");
       },
       onError: (error: unknown) => ErrorHandler(error),
     };
@@ -92,17 +91,17 @@ export const WalletDialog = ({
 
           <div className="grid gap-4 py-4">
             {/* Name Field */}
-              <FormField
-                id="name"
-                name="name"
-                label="Name"
-                type="text"
-                placeholder="Enter wallet name"
-                required
-                labelPosition="side"
-                {...form.getInputProps("name")}
-              />
-              
+            <FormField
+              id="name"
+              name="name"
+              label="Name"
+              type="text"
+              placeholder="Enter wallet name"
+              required
+              labelPosition="side"
+              {...form.getInputProps("name")}
+            />
+
             {/* Currency Field */}
             <FormField
               id="currency"
@@ -114,7 +113,6 @@ export const WalletDialog = ({
               labelPosition="side"
               {...form.getInputProps("currency")}
             />
-            
 
             {/* Initial Balance Field (only for create mode) */}
             {mode === "create" && (
