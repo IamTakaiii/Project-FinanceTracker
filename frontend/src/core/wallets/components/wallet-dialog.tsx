@@ -9,13 +9,13 @@ import {
 } from "@/global/components/ui/dialog";
 import type { Wallet } from "../wallet-types";
 import { Button } from "@/global/components/ui/button";
-import { Label } from "@/global/components/ui/label";
-import { Input } from "@/global/components/ui/input";
 import { useCreateWallet } from "../wallet-hook";
 import { useForm } from "@mantine/form";
 import { Spinner } from "@/global/components/ui/spinner";
 import { useState } from "react";
 import { ErrorHandler } from "@/global/utils/errors";
+import { FormField } from "@/global/components/ui/formfield";
+
 
 type WalletDialogProps = React.ComponentProps<"div"> & {
   children?: React.ReactNode;
@@ -77,7 +77,7 @@ export const WalletDialog = ({
       <DialogTrigger asChild>
         {children || <Button>Open Dialog</Button>}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={form.onSubmit(handleOnSubmitWallet)}>
           <DialogHeader>
             <DialogTitle>
@@ -92,62 +92,43 @@ export const WalletDialog = ({
 
           <div className="grid gap-4 py-4">
             {/* Name Field */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
+              <FormField
                 id="name"
-                className="col-span-3 placeholder:text-gray-300"
+                name="name"
+                label="Name"
+                type="text"
                 placeholder="Enter wallet name"
+                required
+                labelPosition="side"
                 {...form.getInputProps("name")}
               />
-            </div>
-            {form.errors.name && (
-              <div className="col-span-4 text-right text-sm text-red-500">
-                {form.errors.name}
-              </div>
-            )}
-
+              
             {/* Currency Field */}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="currency" className="text-right">
-                Currency
-              </Label>
-              <Input
-                id="currency"
-                className="col-span-3 placeholder:text-gray-300"
-                placeholder="Enter currency code (e.g., USD)"
-                {...form.getInputProps("currency")}
-              />
-            </div>
-            {form.errors.currency && (
-              <div className="col-span-4 text-right text-sm text-red-500">
-                {form.errors.currency}
-              </div>
-            )}
+            <FormField
+              id="currency"
+              name="currency"
+              label="Currency"
+              type="text"
+              placeholder="Enter currency code (e.g., USD)"
+              required
+              labelPosition="side"
+              {...form.getInputProps("currency")}
+            />
+            
 
             {/* Initial Balance Field (only for create mode) */}
             {mode === "create" && (
-              <>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="initial_balance" className="text-right">
-                    Initial Balance
-                  </Label>
-                  <Input
-                    id="initial_balance"
-                    type="number"
-                    step="0.01"
-                    className="col-span-3"
-                    {...form.getInputProps("initial_balance")}
-                  />
-                </div>
-                {form.errors.initial_balance && (
-                  <div className="col-span-4 text-right text-sm text-red-500">
-                    {form.errors.initial_balance}
-                  </div>
-                )}
-              </>
+              <FormField
+                id="initial_balance"
+                name="initial_balance"
+                label="Initial Balance"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                required
+                labelPosition="side"
+                {...form.getInputProps("initial_balance")}
+              />
             )}
           </div>
 
