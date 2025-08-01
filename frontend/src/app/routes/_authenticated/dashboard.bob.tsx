@@ -43,7 +43,7 @@ function RouteComponent() {
         <h1 className="text-2xl font-bold mb-4">Wallets</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {allWallets.map((wallet) => (
-            <div key={wallet.id} className="p-4 border rounded-md shadow-sm">
+            <div key={wallet.id} className="p-4 border rounded-sm shadow-sm">
               <h2 className="text-lg font-semibold">{wallet.name}</h2>
               <p>Currency: {wallet.currency}</p>
             </div>
@@ -59,7 +59,7 @@ function RouteComponent() {
           });
         }}
         disabled={!cursor}
-        className="inline-block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        className="inline-block px-4 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
       >Load More</button>
     </>
   );

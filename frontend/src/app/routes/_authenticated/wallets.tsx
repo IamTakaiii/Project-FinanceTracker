@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authenticated/wallets')({
   validateSearch: (s) => s as GetWalletQuery,
   loaderDeps: (d) => d,
   loader: async ({ deps }) => ({
-    crumb: 'wallets',
+    crumb: 'Wallets',
     results: await getWallets(deps.search),
   }),
 })

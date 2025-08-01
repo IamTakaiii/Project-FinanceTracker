@@ -12,7 +12,7 @@ export const FormField = ({ label, id, error, labelPosition='top', ...props }: F
 		(
 			labelPosition === "side" ? (
 				<div className="grid grid-cols-4 items-center gap-4">
-					<Label htmlFor={id} className="text-right">
+					<Label htmlFor={id} className="col-span-1 text-right">
 						{label}
 					</Label>
 					<Input id={id} className="col-span-3 placeholder:text-gray-300" {...props} />

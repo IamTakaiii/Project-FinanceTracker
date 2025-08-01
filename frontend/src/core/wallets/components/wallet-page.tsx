@@ -13,7 +13,7 @@ export const WalletPage = () => {
           </p>
         </div>
         <WalletDialog mode="create">
-          <Button>
+          <Button size={"sm"}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Add Wallet
           </Button>

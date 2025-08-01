@@ -78,7 +78,7 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={form.onSubmit(handleOnSubmitWallet)}>
-          <DialogHeader>
+          <DialogHeader className="mb-4">
             <DialogTitle>
               {mode === "create" ? "Create Wallet" : "Edit Wallet"}
             </DialogTitle>
@@ -130,8 +130,8 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
             )}
           </div>
 
-          <DialogFooter>
-            <Button type="submit" disabled={isProcessing || !form.isDirty()}>
+          <DialogFooter className="flex justify-end mt-4">
+            <Button type="submit" disabled={isProcessing || !form.isDirty()} size={"sm"}>
               {isProcessing ? (
                 <Spinner size="small" className="text-white" />
               ) : (
