@@ -34,7 +34,7 @@ export const RegisterForm = ({ className, ...props }: React.ComponentProps<"div"
 			setIsLoading(true);
 			const registerData = await registerByEmail(values.name, values.email, values.password);
 			if (registerData.error) {
-				throw new Error(registerData.error.message);
+				throw new Error("Registration failed: " + registerData.error);
 			}
 			if (registerData.data) {
 				navigate({ to: "/login" });
