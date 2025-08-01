@@ -2,6 +2,7 @@ export type Wallet = {
   id: string;
   name: string;
   currency: string;
+  initial_balance: string;
 }
 
 export type GetWalletQuery = {
