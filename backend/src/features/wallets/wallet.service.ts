@@ -1,5 +1,6 @@
 import { NotFoundError } from "elysia";
 
+import { BadRequestError } from "../../core/domain/error/error.class";
 import { CreateWallet, UpdateWallet, WalletQuery } from "./wallet.dto";
 import { WalletRepository } from "./wallet.repo";
 
@@ -11,6 +12,10 @@ export class WalletService {
   }
 
   public async createWallet(userId: string, walletData: CreateWallet) {
+    const { wallets } = await this.walletRepository.get(userId, { name: walletData.name });
+    if (wallets.length > 0) {
+      throw new BadRequestError(`Wallet name "${walletData.name}" already exists`);
+    }
     return this.walletRepository.create(userId, walletData);
   }
 

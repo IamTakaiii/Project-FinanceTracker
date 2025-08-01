@@ -14,19 +14,12 @@ import { Input } from "@/global/components/ui/input";
 import { useCreateWallet } from "../wallet-hook";
 import { useForm } from "@mantine/form";
 import { Spinner } from "@/global/components/ui/spinner";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ErrorHandler } from "@/global/utils/errors";
-
-type WalletFormValues = {
-  name: string;
-  currency: string;
-  initial_balance: string;
-};
 
 type WalletDialogProps = React.ComponentProps<"div"> & {
   children?: React.ReactNode;
   mode: "create" | "edit";
-  // Wallet is optional for 'create' but required for 'edit'.
   wallet?: Wallet;
 };
 
@@ -46,7 +39,7 @@ export const WalletDialog = ({
 
   const isProcessing = createWalletMutation.isPending;
 
-  const form = useForm<WalletFormValues>({
+  const form = useForm<Omit<Wallet, "id">>({
     mode: "uncontrolled",
     initialValues: {
       name: wallet?.name || "",
@@ -63,19 +56,7 @@ export const WalletDialog = ({
     },
   });
 
-  useEffect(() => {
-    if (isOpen) {
-      form.setValues({
-        name: wallet?.name || "",
-        currency: wallet?.currency || "",
-        initial_balance: wallet?.initial_balance?.toString() || "0.00",
-      });
-      form.resetDirty();
-      form.clearErrors();
-    }
-  }, [isOpen, wallet]);
-
-  const handleOnSubmitWallet = (values: WalletFormValues) => {
+  const handleOnSubmitWallet = (values: Omit<Wallet, "id">) => {
     const mutationCallbacks = {
       onSuccess: () => {
         setIsOpen(false);
@@ -117,7 +98,8 @@ export const WalletDialog = ({
               </Label>
               <Input
                 id="name"
-                className="col-span-3"
+                className="col-span-3 placeholder:text-gray-300"
+                placeholder="Enter wallet name"
                 {...form.getInputProps("name")}
               />
             </div>
@@ -134,7 +116,8 @@ export const WalletDialog = ({
               </Label>
               <Input
                 id="currency"
-                className="col-span-3"
+                className="col-span-3 placeholder:text-gray-300"
+                placeholder="Enter currency code (e.g., USD)"
                 {...form.getInputProps("currency")}
               />
             </div>
