@@ -16,5 +16,6 @@ export const getWalletById = async ({ id }: { id: string }) => {
 };
 
 export const createWallet = async (wallet: Omit<Wallet, "id">) => {
-  return await api.post<Wallet>(baseURL, wallet);
+  await api.post<Wallet>(baseURL, wallet);
+  return;
 };

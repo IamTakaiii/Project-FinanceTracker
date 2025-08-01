@@ -3,7 +3,6 @@ import { Button } from "@/global/components/ui/button";
 import { PlusCircle } from "lucide-react";
 
 export const WalletPage = () => {
-
   return (
     <>
       <div className="flex items-center justify-between">
