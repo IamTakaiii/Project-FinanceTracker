@@ -36,7 +36,7 @@ export function NavMain({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <Link to={item.url}>
+              <Link to={item.url} preload={item.preload ? "intent" : false}>
                 <SidebarMenuButton tooltip={item.title} isActive={pathname === item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

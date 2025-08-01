@@ -3,10 +3,10 @@ import {
   IconDashboard,
   IconFolder,
   IconHelp,
-  IconListDetails,
   IconSearch,
   IconSettings,
   IconUsers,
+  IconWallet,
 } from "@tabler/icons-react"
 import { SquareTerminal } from "lucide-react"
 
@@ -17,6 +17,7 @@ export interface NavItem {
   icon: React.ElementType;
   isActive?: boolean;
   items?: Omit<NavItem, 'icon' | 'items'>[];
+  preload?: boolean;
 }
 
 export interface UserProfile {
@@ -33,7 +34,7 @@ export const userProfile: UserProfile = {
 
 export const mainNavItems: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: IconDashboard },
-  { title: "Lifecycle", url: "/dashboard/bib", icon: IconListDetails },
+  { title: "Wallets", url: "/wallets", icon: IconWallet },
   { title: "Analytics", url: "/dashboard/bob", icon: IconChartBar },
   { title: "Projects", url: "#", icon: IconFolder },
   { title: "Team", url: "#", icon: IconUsers },

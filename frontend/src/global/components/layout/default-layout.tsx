@@ -14,8 +14,7 @@ const DefaultLayout = (): React.JSX.Element => {
 			<AppSidebar mainNavItems={mainNavItems} collapseNavItems={collapseNavItems} secondaryNavItems={secondaryNavItems} user={userProfile} />
 			<SidebarInset>
 				<header
-					className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between
-"
+					className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between"
 				>
 					<div className="flex items-center gap-2">
 						<SidebarTrigger className="-ml-1" />
@@ -27,7 +26,7 @@ const DefaultLayout = (): React.JSX.Element => {
 						<ThemeModeToggle />
 					</div>
 				</header>
-				<div className="flex flex-1 flex-col gap-4 p-4">{<Outlet />}</div>
+				<div className="flex flex-1 flex-col gap-6 p-4 md:gap-8 md:p-8">{<Outlet />}</div>
 			</SidebarInset>
 		</SidebarProvider>
 	);
