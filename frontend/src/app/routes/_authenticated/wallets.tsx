@@ -11,7 +11,8 @@ export const Route = createFileRoute('/_authenticated/wallets')({
   loaderDeps: (d) => d,
   loader: async ({ deps }) => ({
     crumb: 'Wallets',
-    results: await getWallets(deps.search),
+    initialWallets: await getWallets(deps.search),
+    ts: Date.now()
   }),
 })
 

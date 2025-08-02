@@ -3,6 +3,8 @@ export type Wallet = {
   name: string;
   currency: string;
   initial_balance: string;
+  balance: string;
+  icon: string | null;
 }
 
 export type GetWalletQuery = {

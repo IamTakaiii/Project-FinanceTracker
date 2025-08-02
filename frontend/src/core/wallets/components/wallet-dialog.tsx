@@ -9,31 +9,27 @@ import {
 } from "@/global/components/ui/dialog";
 import type { Wallet } from "../wallet-types";
 import { Button } from "@/global/components/ui/button";
-import { useCreateWallet } from "../wallet-hook";
+import { useCreateWallet, useUpdateWallet } from "../wallet-hook";
 import { useForm } from "@mantine/form";
 import { Spinner } from "@/global/components/ui/spinner";
 import { useState } from "react";
-import { ErrorHandler } from "@/global/utils/errors";
 import { FormField } from "@/global/components/ui/formfield";
-import { toast } from "sonner";
 
 type WalletDialogProps = React.ComponentProps<"div"> & {
   children?: React.ReactNode;
   mode: "create" | "edit";
   wallet?: Wallet;
+  onOpenChange?: (open: boolean) => void;
 };
 
-export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
+export const WalletDialog = ({ children, mode, wallet, onOpenChange }: WalletDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const createWalletMutation = useCreateWallet();
-  // const updateWalletMutation = useUpdateWallet();
+  const updateWalletMutation = useUpdateWallet();
 
-  // A consolidated loading state for the submit button.
-  // const isProcessing =
-  //   createWalletMutation.isPending || updateWalletMutation.isPending;
-
-  const isProcessing = createWalletMutation.isPending;
+  const isProcessing =
+    createWalletMutation.isPending || updateWalletMutation.isPending;
 
   const form = useForm<Omit<Wallet, "id">>({
     mode: "uncontrolled",
@@ -41,11 +37,17 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
       name: wallet?.name || "",
       currency: wallet?.currency || "",
       initial_balance: wallet?.initial_balance?.toString() || "0.00",
+      balance: wallet?.balance?.toString() || "0.00",
+      icon: wallet?.icon || null,
     },
     validate: {
       name: (value) => (value.trim() ? null : "Name is required"),
       currency: (value) => (value.trim() ? null : "Currency is required"),
       initial_balance: (value) =>
+        !isNaN(parseFloat(value)) && parseFloat(value) >= 0
+          ? null
+          : "Balance must be a non-negative number",
+      balance: (value) =>
         !isNaN(parseFloat(value)) && parseFloat(value) >= 0
           ? null
           : "Balance must be a non-negative number",
@@ -57,17 +59,18 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
       onSuccess: () => {
         setIsOpen(false);
         form.reset();
-        mode === "create"
-          ? toast.success("Wallet created successfully")
-          : toast.success("Wallet updated successfully");
       },
-      onError: (error: unknown) => ErrorHandler(error),
     };
 
     if (mode === "create") {
       createWalletMutation.mutate(values, mutationCallbacks);
+      onOpenChange?.(false);
     } else if (mode === "edit" && wallet) {
-      //
+      updateWalletMutation.mutate(
+        { ...values, id: wallet.id },
+        mutationCallbacks
+      );
+      onOpenChange?.(false);
     }
   };
 
@@ -114,6 +117,21 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
               {...form.getInputProps("currency")}
             />
 
+            { /* Balance Field */}
+            {mode === "edit" && (
+              <FormField
+                id="balance"
+                name="balance"
+                label="Current Balance"
+                type="number"
+                step="1.00"
+                placeholder="0.00"
+                required
+                labelPosition="side"
+                {...form.getInputProps("balance") }
+              />
+            )}
+
             {/* Initial Balance Field (only for create mode) */}
             {mode === "create" && (
               <FormField
@@ -131,7 +149,11 @@ export const WalletDialog = ({ children, mode, wallet }: WalletDialogProps) => {
           </div>
 
           <DialogFooter className="flex justify-end mt-4">
-            <Button type="submit" disabled={isProcessing || !form.isDirty()} size={"sm"}>
+            <Button
+              type="submit"
+              disabled={isProcessing || !form.isDirty()}
+              size={"sm"}
+            >
               {isProcessing ? (
                 <Spinner size="small" className="text-white" />
               ) : (

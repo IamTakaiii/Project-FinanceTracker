@@ -19,3 +19,13 @@ export const createWallet = async (wallet: Omit<Wallet, "id">) => {
   await api.post<Wallet>(baseURL, wallet);
   return;
 };
+
+export const updateWallet = async (wallet: Wallet) => {
+  await api.put<Wallet>(`${baseURL}/${wallet.id}`, wallet);
+  return;
+}
+
+export const deleteWallet = async (id: string) => {
+  await api.delete(`${baseURL}/${id}`);
+  return;
+};
