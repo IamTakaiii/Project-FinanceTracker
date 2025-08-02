@@ -11,6 +11,12 @@ export const wallets = pgTable("wallets", {
   })
     .default("0.00")
     .notNull(),
+  balance: decimal("balance", {
+    precision: 10,
+    scale: 2,
+  })
+    .default("0.00")
+    .notNull(),
   currency: varchar("currency", { length: 3 }).notNull(),
   userId: text("user_id")
     .notNull()

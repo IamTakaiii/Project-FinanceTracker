@@ -18,6 +18,7 @@ export class WalletRepository {
         id: crypto.randomUUID(),
         name: walletData.name,
         initial_balance: walletData.initial_balance.toString(),
+        balance: walletData.initial_balance.toString(),
         currency: walletData.currency,
         userId: userId,
       })

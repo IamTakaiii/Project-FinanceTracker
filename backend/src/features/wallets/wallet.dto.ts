@@ -26,7 +26,12 @@ const createWalletSchema = t.Object({
   currency: t.String({ length: 3 }),
 });
 
-const updateWalletSchema = t.Partial(createWalletSchema);
+const updateWalletSchema = t.Object({
+  name: t.Optional(t.String({ maxLength: 100 })),
+  initial_balance: t.Optional(t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" })),
+  balance: t.Optional(t.String({ pattern: "^\\d+(\\.\\d{1,2})?$" })),
+  currency: t.Optional(t.String({ length: 3 })),
+});
 
 const walletSchema = t.Object({
   id: t.String(),
