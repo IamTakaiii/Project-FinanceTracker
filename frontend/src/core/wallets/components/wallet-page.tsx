@@ -4,11 +4,22 @@ import { useLoaderData, useSearch } from "@tanstack/react-router";
 import { PlusCircle } from "lucide-react";
 import WalletCard from "./wallet-card";
 import { useGetWallets } from "../wallet-hook";
+import {
+  CardSkeleton,
+  DataRenderer,
+  NoDataEmptyState,
+} from "@/global/components/custom/data-renderer";
 
 export const WalletPage = () => {
-  const { initialWallets, ts } = useLoaderData({ from: "/_authenticated/wallets" });
+  const { initialWallets, ts } = useLoaderData({
+    from: "/_authenticated/wallets",
+  });
   const search = useSearch({ from: "/_authenticated/wallets" });
-  const wallets = useGetWallets(search, initialWallets, ts);
+  const {
+    data: walletsResponse,
+    isLoading,
+    isFetching,
+  } = useGetWallets(search, initialWallets, ts);
 
   return (
     <>
@@ -28,11 +39,18 @@ export const WalletPage = () => {
       </div>
       {/* Wallets list will be rendered here */}
       <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          wallets.data.data.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} />
-          ))
-        }
+        <DataRenderer
+          isLoading={isLoading}
+          isFetching={isFetching}
+          data={walletsResponse?.data}
+          render={(wallet) => <WalletCard key={wallet.id} wallet={wallet} />}
+          skeleton={<CardSkeleton />}
+          emptyState={
+            <div className="sm:col-span-2 lg:col-span-3 flex flex-1 items-center justify-center h-96">
+              <NoDataEmptyState />
+            </div>
+          }
+        />
       </div>
     </>
   );
