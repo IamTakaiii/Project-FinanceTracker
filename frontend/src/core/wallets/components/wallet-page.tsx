@@ -16,7 +16,9 @@ export const WalletPage = () => {
   const { initialWallets, ts } = useLoaderData({
     from: "/_authenticated/wallets",
   });
+  
   const search = useSearch({ from: "/_authenticated/wallets" });
+
   const {
     data: { pages },
     isLoading,
