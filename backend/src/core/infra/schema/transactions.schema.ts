@@ -1,5 +1,6 @@
 import { numeric, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
+import { user } from "./auth.schema";
 import { categories } from "./categories.schema";
 import { wallets } from "./wallets.schema";
 
@@ -20,4 +21,7 @@ export const transactions = pgTable("transactions", {
   walletId: text("wallet_id")
     .notNull()
     .references(() => wallets.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 });
