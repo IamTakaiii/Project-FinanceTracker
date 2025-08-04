@@ -9,6 +9,7 @@ import {
   DataRenderer,
   NoDataEmptyState,
 } from "@/global/components/custom/data-renderer";
+import { useEffect, useRef } from "react";
 
 export const WalletPage = () => {
   const { initialWallets, ts } = useLoaderData({
@@ -16,10 +17,36 @@ export const WalletPage = () => {
   });
   const search = useSearch({ from: "/_authenticated/wallets" });
   const {
-    data: walletsResponse,
+    data: { pages },
     isLoading,
     isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
   } = useGetWallets(search, initialWallets, ts);
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <>
@@ -42,7 +69,7 @@ export const WalletPage = () => {
         <DataRenderer
           isLoading={isLoading}
           isFetching={isFetching}
-          data={walletsResponse?.data}
+          data={pages.flatMap((page) => page.data) || []}
           render={(wallet) => <WalletCard key={wallet.id} wallet={wallet} />}
           skeleton={<CardSkeleton />}
           emptyState={
@@ -51,6 +78,7 @@ export const WalletPage = () => {
             </div>
           }
         />
+        <div ref={loadMoreRef}>{isFetchingNextPage && <CardSkeleton />}</div>
       </div>
     </>
   );

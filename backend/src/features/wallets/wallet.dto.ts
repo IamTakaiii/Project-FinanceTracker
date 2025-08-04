@@ -9,8 +9,8 @@ const walletParamsSchema = t.Object({
 const walletQuerySchema = t.Object({
   name: t.Optional(t.String({ maxLength: 100 })),
   currency: t.Optional(t.String({ length: 3 })),
-  limit: t.Optional(t.Number({ default: 10, minimum: 1, maximum: 100 })),
-  cursor: t.Optional(t.String({ pattern: "^[A-Za-z0-9+/=]+$" })),
+  limit: t.Optional(t.Number({ default: 5, minimum: 1, maximum: 100 })),
+  cursor: t.Optional(t.String()),
   sortBy: t.Optional(t.Union([t.Literal("name")])),
   sortOrder: t.Optional(t.Union([t.Literal("asc"), t.Literal("desc")])),
 });
