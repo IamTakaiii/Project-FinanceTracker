@@ -9,7 +9,8 @@ import {
   DataRenderer,
   NoDataEmptyState,
 } from "@/global/components/custom/data-renderer";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo } from "react";
+import { useInView } from "@/global/hooks/use-view";
 
 export const WalletPage = () => {
   const { initialWallets, ts } = useLoaderData({
@@ -25,28 +26,17 @@ export const WalletPage = () => {
     fetchNextPage,
   } = useGetWallets(search, initialWallets, ts);
 
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const { ref, inView } = useInView({
+    threshold: 1.0,
+  });
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const wallets = useMemo(() => pages.flatMap((page) => page.data), [pages]);
 
   return (
     <>
@@ -64,12 +54,12 @@ export const WalletPage = () => {
           </Button>
         </WalletDialog>
       </div>
-      {/* Wallets list will be rendered here */}
+
       <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <DataRenderer
           isLoading={isLoading}
           isFetching={isFetching}
-          data={pages.flatMap((page) => page.data) || []}
+          data={wallets}
           render={(wallet) => <WalletCard key={wallet.id} wallet={wallet} />}
           skeleton={<CardSkeleton />}
           emptyState={
@@ -78,7 +68,7 @@ export const WalletPage = () => {
             </div>
           }
         />
-        <div ref={loadMoreRef}>{isFetchingNextPage && <CardSkeleton />}</div>
+        <div ref={ref}>{isFetchingNextPage && <CardSkeleton />}</div>
       </div>
     </>
   );
