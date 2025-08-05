@@ -1,21 +1,25 @@
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import {
   createWallet,
   deleteWallet,
+  getTotalWalletBalance,
   getWallets,
   updateWallet,
 } from "./wallet-api";
 import type {
   GetListWalletResponse,
+  GetTotalBalanceResponse,
   GetWalletQuery,
   Wallet,
 } from "./wallet-types";
 import { toast } from "sonner";
 import { ErrorHandler } from "@/global/utils/errors";
+import { QUERY_KEY_WALLETS, QUERY_KEY_WALLETS_TOTAL_BALANCE } from "@/global/config/constants";
 
 export const useCreateWallet = () => {
   const queryClient = useQueryClient();
@@ -26,7 +30,8 @@ export const useCreateWallet = () => {
     },
     onSuccess: async () => {
       toast.success("Wallet created successfully");
-      queryClient.refetchQueries({ queryKey: ["wallets"] });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEY_WALLETS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WALLETS_TOTAL_BALANCE] });
     },
     onError: (error) => {
       ErrorHandler(error);
@@ -43,7 +48,8 @@ export const useUpdateWallet = () => {
     },
     onSuccess: () => {
       toast.success("Wallet updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WALLETS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WALLETS_TOTAL_BALANCE] });
     },
     onError: (error) => {
       ErrorHandler(error);
@@ -60,7 +66,8 @@ export const useDeleteWallet = () => {
     },
     onSuccess: () => {
       toast.success("Wallet deleted successfully");
-      queryClient.refetchQueries({ queryKey: ["wallets"] });
+      queryClient.refetchQueries({ queryKey: [QUERY_KEY_WALLETS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WALLETS_TOTAL_BALANCE] });
     },
     onError: (error) => {
       ErrorHandler(error);
@@ -86,3 +93,18 @@ export const useGetWallets = (
     initialDataUpdatedAt: ts,
   });
 };
+
+
+export const useGetWalletsTotalBalance = (initialBalance: string, ts: number) => {
+  return useQuery<GetTotalBalanceResponse>({
+    queryKey: [QUERY_KEY_WALLETS_TOTAL_BALANCE],
+    queryFn: () => getTotalWalletBalance(),
+    initialData: {
+      data: {
+        totalBalance: initialBalance,
+        baseCurrency: 'USD',
+      },
+    },
+      initialDataUpdatedAt: ts,
+  })
+}

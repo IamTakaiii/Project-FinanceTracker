@@ -70,4 +70,15 @@ export const walletRoutes = new Elysia({ prefix: "/wallets", name: "wallets-rout
       auth: true,
       params: "wallet.params",
     },
+  )
+  .get(
+    "/total",
+    async ({ user, walletService, response }) => {
+      const totalBalance = await walletService.getTotalBalance(user.id);
+      return response.withData({ totalBalance, baseCurrency: "USD" });
+    },
+    {
+      auth: true,
+      response: "wallet.total.response",
+    },
   );

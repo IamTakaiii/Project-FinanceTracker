@@ -20,3 +20,10 @@ export type GetListWalletResponse = {
   data: Wallet[];
   cursor: string | null;
 }
+
+export type GetTotalBalanceResponse = {
+  data: {
+    totalBalance: string;
+    baseCurrency: string | null;
+  }
+}

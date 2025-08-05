@@ -48,7 +48,7 @@ export class WalletRepository {
     return wallet;
   }
 
-  public async getById(userId: string, walletId: string) {
+  public async findById(userId: string, walletId: string) {
     const wallet = await this.db
       .select()
       .from(schema.wallets)
@@ -57,7 +57,7 @@ export class WalletRepository {
     return wallet;
   }
 
-  public async get(userId: string, query: WalletQuery) {
+  public async findWithCursor(userId: string, query: WalletQuery) {
     const sortBy = query.sortBy || "name";
     const sortOrder = query.sortOrder || "asc";
     const limit = query.limit;
@@ -117,5 +117,12 @@ export class WalletRepository {
       wallets,
       nextCursor,
     };
+  }
+
+  public async findAllByUserId(userId: string) {
+    const wallets = await this.db.query.wallets.findMany({
+      where: eq(schema.wallets.userId, userId),
+    });
+    return wallets;
   }
 }

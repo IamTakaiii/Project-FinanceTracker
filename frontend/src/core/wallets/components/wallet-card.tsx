@@ -52,7 +52,7 @@ const WalletCard = ({ wallet }: WalletCardProps) => {
         />
       </CardHeader>
       <CardContent className="flex-grow flex items-end justify-between">
-        <div className="text-3xl font-bold">{formattedBalance}</div>
+        <div className="text-xl font-bold text-ellipsis">{formattedBalance}</div>
 
         {/* Dropdown menu for actions */}
         <DropdownMenu open={isDropDownOpen} onOpenChange={setIsDropDownOpen}>

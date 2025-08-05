@@ -37,17 +37,26 @@ const walletSchema = t.Object({
   id: t.String(),
   name: t.String({ maxLength: 100 }),
   initial_balance: t.String(),
+  balance: t.String(),
   currency: t.String({ length: 3 }),
   userId: t.String(),
 });
 const walletResponseSchema = Response(walletSchema);
 const walletPaginationResponseSchema = ResponseWithCursor(t.Array(walletSchema));
 
+const walletTotalResponseSchema = Response(
+  t.Object({
+    totalBalance: t.String(),
+    baseCurrency: t.String({ length: 3 }),
+  }),
+);
+
 export type CreateWallet = typeof createWalletSchema.static;
 export type UpdateWallet = typeof updateWalletSchema.static;
 export type WalletParams = typeof walletParamsSchema.static;
 export type WalletQuery = typeof walletQuerySchema.static;
 export type WalletCursor = typeof walletCursorSchema.static;
+export type Wallet = typeof walletSchema.static;
 
 export const walletModel = new Elysia().model({
   "wallet.create": createWalletSchema,
@@ -57,4 +66,5 @@ export const walletModel = new Elysia().model({
   "wallet.create.response": ResponseWithoutData,
   "wallet.id.response": walletResponseSchema,
   "wallet.pagination.response": walletPaginationResponseSchema,
+  "wallet.total.response": walletTotalResponseSchema,
 });

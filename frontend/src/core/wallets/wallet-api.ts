@@ -1,5 +1,5 @@
 import api from "@/global/utils/axios"
-import type { GetWalletQuery, GetListWalletResponse, Wallet } from "./wallet-types"
+import type { GetWalletQuery, GetListWalletResponse, Wallet, GetTotalBalanceResponse } from "./wallet-types"
 
 const baseURL = "/api/v1/wallets";
 
@@ -29,3 +29,9 @@ export const deleteWallet = async (id: string) => {
   await api.delete(`${baseURL}/${id}`);
   return;
 };
+
+
+export const getTotalWalletBalance = async () => {
+  const response = await api.get<GetTotalBalanceResponse>(`${baseURL}/total`);
+  return response.data;
+}

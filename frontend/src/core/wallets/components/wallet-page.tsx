@@ -3,7 +3,7 @@ import { Button } from "@/global/components/ui/button";
 import { useLoaderData, useSearch } from "@tanstack/react-router";
 import { PlusCircle } from "lucide-react";
 import WalletCard from "./wallet-card";
-import { useGetWallets } from "../wallet-hook";
+import { useGetWallets, useGetWalletsTotalBalance } from "../wallet-hook";
 import {
   CardSkeleton,
   DataRenderer,
@@ -11,12 +11,13 @@ import {
 } from "@/global/components/custom/data-renderer";
 import { useEffect, useMemo } from "react";
 import { useInView } from "@/global/hooks/use-view";
+import WalletTotal from "./wallet-total";
 
 export const WalletPage = () => {
   const { initialWallets, ts } = useLoaderData({
     from: "/_authenticated/wallets",
   });
-  
+
   const search = useSearch({ from: "/_authenticated/wallets" });
 
   const {
@@ -27,6 +28,14 @@ export const WalletPage = () => {
     hasNextPage,
     fetchNextPage,
   } = useGetWallets(search, initialWallets, ts);
+
+  const {
+    data: {
+      data: { totalBalance, baseCurrency },
+    },
+    isLoading: isLoadingTotal,
+    isFetching: isFetchingTotal,
+  } = useGetWalletsTotalBalance("Loading....", ts);
 
   const { ref, inView } = useInView({
     threshold: 1.0,
@@ -58,6 +67,12 @@ export const WalletPage = () => {
       </div>
 
       <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <WalletTotal
+          totalBalance={totalBalance}
+          baseCurrency={baseCurrency}
+          isLoading={isLoadingTotal}
+          isFetching={isFetchingTotal}
+        />
         <DataRenderer
           isLoading={isLoading}
           isFetching={isFetching}
