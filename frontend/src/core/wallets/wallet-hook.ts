@@ -95,16 +95,17 @@ export const useGetWallets = (
 };
 
 
-export const useGetWalletsTotalBalance = (initialBalance: string, ts: number) => {
+export const useGetWalletsTotalBalance = (initialBalance: string | null, ts: number) => {
   return useQuery<GetTotalBalanceResponse>({
     queryKey: [QUERY_KEY_WALLETS_TOTAL_BALANCE],
     queryFn: () => getTotalWalletBalance(),
     initialData: {
       data: {
-        totalBalance: initialBalance,
+        totalBalance: initialBalance || "0.00",
         baseCurrency: 'USD',
       },
     },
-      initialDataUpdatedAt: ts,
+    initialDataUpdatedAt: ts,
+    refetchOnWindowFocus: false,
   })
 }

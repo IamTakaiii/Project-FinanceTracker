@@ -23,7 +23,7 @@ export type GetListWalletResponse = {
 
 export type GetTotalBalanceResponse = {
   data: {
-    totalBalance: string;
+    totalBalance: string | null;
     baseCurrency: string | null;
   }
 }

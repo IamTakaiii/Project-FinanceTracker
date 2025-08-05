@@ -7,7 +7,7 @@ import {
 import { DynamicIcon } from "lucide-react/dynamic";
 
 type WalletTotalProps = {
-    totalBalance: string;
+    totalBalance: string | null;
     isLoading?: boolean;
     isFetching?: boolean;
     baseCurrency?: string | null;
@@ -22,7 +22,7 @@ const WalletTotal = ({ totalBalance, baseCurrency, isLoading, isFetching}: Walle
   }).format(Number(totalBalance));
 
   return (
-    <Card className="flex flex-col bg-primary text-primary-foreground transition-all">
+    <Card className="flex flex-col bg-primary text-primary-foreground transition-all col-span-2">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="space">
           <CardTitle className="text-lg font-medium">{"Total Net Worth"}</CardTitle>
