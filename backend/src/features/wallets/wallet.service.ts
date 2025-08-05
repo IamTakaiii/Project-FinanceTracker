@@ -55,6 +55,10 @@ export class WalletService {
       return 0;
     }
 
+    if (Object.keys(balances).length === 1 && balances[baseCurrency]) {
+      return balances[baseCurrency];
+    }
+
     const promptLines = [
       `Convert the following amounts to a single total in ${baseCurrency}.`,
       ...Object.entries(balances).map(([currency, total]) => `${total.toFixed(2)} ${currency}`),
