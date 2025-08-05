@@ -81,7 +81,7 @@ export const useGetWallets = (
   ts: number
 ) => {
   return useInfiniteQuery({
-    queryKey: ["wallets", search],
+    queryKey: [QUERY_KEY_WALLETS],
     queryFn: ({ pageParam }) => getWallets({ ...search, cursor: pageParam }),
     initialData: {
       pages: [initialData],
@@ -89,7 +89,7 @@ export const useGetWallets = (
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => lastPage.cursor || undefined,
-    staleTime: 1000 * 60 * 60,
+    staleTime: 5 * 60 * 1000,
     initialDataUpdatedAt: ts,
   });
 };

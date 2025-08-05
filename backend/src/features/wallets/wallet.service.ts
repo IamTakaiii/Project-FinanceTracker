@@ -66,7 +66,8 @@ export class WalletService {
 
     const prompt =
       promptLines.join("\n") +
-      `\n\nReturn only the final numeric total in ${baseCurrency}, with no other text, symbols, or currency codes.`;
+      `\n\nReturn only the final numeric total in ${baseCurrency}, don't explain.
+      `;
 
     const aiResponse = await gemini.models.generateContent({
       model: "gemini-2.0-flash-lite",

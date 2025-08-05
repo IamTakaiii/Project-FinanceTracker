@@ -14,5 +14,6 @@ export const Route = createFileRoute('/_authenticated/wallets')({
     initialWallets: await getWallets(deps.search),
     ts: Date.now()
   }),
+  gcTime: 0,
 })
 
