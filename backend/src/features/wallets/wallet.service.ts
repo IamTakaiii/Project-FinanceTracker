@@ -109,10 +109,6 @@ export class WalletService {
       {} as Record<string, number>,
     );
 
-    const totalBaseCurrency = await this.convertedTotalFromAI(
-      sumOfBalancesByCurrency,
-      baseCurrency,
-    );
-    return totalBaseCurrency;
+    return await this.convertedTotalFromAI(sumOfBalancesByCurrency, baseCurrency);
   }
 }
