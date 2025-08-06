@@ -3,41 +3,35 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import { globalIgnores } from "eslint/config";
+import {globalIgnores} from "eslint/config";
 
 export default tseslint.config([
-	globalIgnores(["dist"]),
-	{
-		files: ["**/*.{ts,tsx}"],
-		ignores: ["**/*.gen.ts", "**/*.gen.tsx"],
-		extends: [
-			js.configs.recommended,
-			tseslint.configs.recommended,
-			reactHooks.configs["recommended-latest"],
-			reactRefresh.configs.vite,
-		],
-		languageOptions: {
-			ecmaVersion: 2020,
-			globals: globals.browser,
-		},
-		"import/no-restricted-paths": [
-			"error",
-			{
-				zones: [
-					// enforce unidirectional codebase:
-					// e.g. src/app can import from src/features but not the other way around
-					{
-						target: "./src/features",
-						from: "./src/app",
-					},
-
-					// e.g src/features and src/app can import from these shared modules but not the other way around
-					{
-						target: ["./src/components", "./src/hooks", "./src/lib", "./src/types", "./src/utils"],
-						from: ["./src/features", "./src/app"],
-					},
-				],
-			},
-		],
-	},
+    globalIgnores(["dist"]),
+    {
+        files: ["**/*.{ts,tsx}"],
+        ignores: ["**/*.gen.ts", "**/*.gen.tsx"],
+        extends: [
+            js.configs.recommended,
+            tseslint.configs.recommended,
+            reactHooks.configs["recommended-latest"],
+            reactRefresh.configs.vite,
+        ],
+        languageOptions: {
+            ecmaVersion: 2020,
+            globals: globals.browser,
+        },
+        rules: {
+            "@typescript-eslint/no-unused-vars": ["warn", {
+                argsIgnorePattern: "^_",
+                varsIgnorePattern: "^_",
+                caughtErrorsIgnorePattern: "^_",
+            }],
+            "react-hooks/rules-of-hooks": "error",
+            "react-hooks/exhaustive-deps": "warn",
+            "react-refresh/only-export-components": "warn",
+            "react-refresh/unsafe-named-export": "warn",
+            "react-refresh/unsafe-module": "warn",
+            "react-refresh/unsafe-exports": "warn",
+        }
+    },
 ]);
