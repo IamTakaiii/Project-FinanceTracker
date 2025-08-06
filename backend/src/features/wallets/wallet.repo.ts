@@ -26,13 +26,11 @@ export class WalletRepository {
   }
 
   public async update(userId: string, walletId: string, walletData: UpdateWallet) {
-    const wallet = await this.db
+    return this.db
       .update(schema.wallets)
       .set(walletData)
       .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
       .returning();
-
-    return wallet;
   }
 
   public async delete(userId: string, walletId: string) {
@@ -49,12 +47,11 @@ export class WalletRepository {
   }
 
   public async findById(userId: string, walletId: string) {
-    const wallet = await this.db
+    return await this.db
       .select()
       .from(schema.wallets)
       .where(and(eq(schema.wallets.id, walletId), eq(schema.wallets.userId, userId)))
       .execute();
-    return wallet;
   }
 
   public async findWithCursor(userId: string, query: WalletQuery) {
@@ -120,9 +117,8 @@ export class WalletRepository {
   }
 
   public async findAllByUserId(userId: string) {
-    const wallets = await this.db.query.wallets.findMany({
+    return this.db.query.wallets.findMany({
       where: eq(schema.wallets.userId, userId),
     });
-    return wallets;
   }
 }
