@@ -1,0 +1,23 @@
+POST {{baseUrl}}/api/auth/sign-in/email
+Content-Type: application/json
+{
+  "email": "{{username}}",
+  "password": "{{password}}"
+}
+
+?? duration < {{exceptDuration}}
+?? body contains user
+?? body contains token
+
+GET {{baseUrl}}/api/auth/get-session
+
+?? duration < {{exceptDuration}}
+{{
+    const { equal } = require('assert')
+    const result = response.parsedBody
+    test('is valid session', () => {
+        equal(response.statusCode, 200)
+        equal(result.user.email, 'johndoe@gmail.com')
+        equal(new Date(result.session.expiresAt) > Date.now(), true)
+    })
+}}

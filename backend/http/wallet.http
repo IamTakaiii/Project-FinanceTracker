@@ -1,0 +1,40 @@
+@walletTargetId = ""
+
+###
+@randomName = {{Math.random().toString(36).substring(2, 7)}}
+POST {{baseUrl}}/api/v1/wallets
+Content-Type: application/json
+{
+  "name": "{{randomName}}",
+  "initial_balance": "200.00",
+  "currency": "USD"
+}
+?? status == 200
+?? duration < {{exceptDuration}}
+
+### 
+GET {{baseUrl}}/api/v1/wallets
+
+?? status == 200
+?? duration < {{exceptDuration}}
+?? js Array.isArray(response.parsedBody.data) == true
+@walletTargetId = {{response.parsedBody.data[0].id}}
+
+###
+GET {{baseUrl}}/api/v1/wallets/{{walletTargetId}}
+?? status == 200
+?? duration < {{exceptDuration}}
+
+###
+PUT {{baseUrl}}/api/v1/wallets/{{walletTargetId}}
+Content-Type: application/json
+{
+  "initial_balance": "300.00",
+  "currency": "USD"
+}
+?? status == 200
+?? duration < {{exceptDuration}}
+
+DELETE {{baseUrl}}/api/v1/wallets/{{walletTargetId}}
+?? status == 200
+?? duration < {{exceptDuration}}

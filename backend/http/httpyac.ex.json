@@ -1,0 +1,13 @@
+{
+   "environments": {
+      "dev": {
+        "baseUrl": "",
+        "exceptDuration": 5000,
+        "username": "",
+        "password": ""
+      },
+      "prod": {
+         "baseUrl": ""
+      }
+   }
+}
